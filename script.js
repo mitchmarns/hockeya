@@ -42,60 +42,57 @@ const teams = [
     }
 ];
 
-// Simulate a game between two teams
-function simulateGame() {
-    // Get selected teams from dropdowns
-    const team1Index = parseInt(document.getElementById("team1Select").value);
-    const team2Index = parseInt(document.getElementById("team2Select").value);
+// Display teams and rosters in HTML (for the main page)
+function displayTeams() {
+    const team1Select = document.getElementById('team1Select');
+    const team2Select = document.getElementById('team2Select');
 
-    const team1 = teams[team1Index];
-    const team2 = teams[team2Index];
+    teams.forEach((team, index) => {
+        // Populate dropdowns with team names
+        const option1 = document.createElement('option');
+        option1.value = index;
+        option1.textContent = team.name;
+        team1Select.appendChild(option1);
 
-    // Simulate goals for each player (0-1 goals per player)
-    team1.roster.forEach(player => {
-        player.goals = Math.floor(Math.random() * 2); // 0 or 1 goal per player
+        const option2 = document.createElement('option');
+        option2.value = index;
+        option2.textContent = team.name;
+        team2Select.appendChild(option2);
     });
-    team2.roster.forEach(player => {
-        player.goals = Math.floor(Math.random() * 2); // 0 or 1 goal per player
-    });
-
-    // Calculate total goals for each team
-    const team1Goals = team1.roster.reduce((acc, player) => acc + player.goals, 0);
-    const team2Goals = team2.roster.reduce((acc, player) => acc + player.goals, 0);
-
-    // Update the scoreboard
-    document.getElementById("team1Goals").textContent = team1Goals;
-    document.getElementById("team2Goals").textContent = team2Goals;
-
-    // Display the team names
-    document.getElementById("team1Name").textContent = `Team 1: ${team1.name}`;
-    document.getElementById("team2Name").textContent = `Team 2: ${team2.name}`;
-
-    // Determine winner or tie
-    let result;
-    if (team1Goals > team2Goals) {
-        result = `${team1.name} wins!`;
-    } else if (team2Goals > team1Goals) {
-        result = `${team2.name} wins!`;
-    } else {
-        result = "It's a tie!";
-    }
-
-    document.getElementById("gameResult").textContent = result;
-
-    // Optionally, save the stats to localStorage
-    localStorage.setItem('teams', JSON.stringify(teams));
 }
 
-// On page load, display the teams and rosters (if needed)
+// Display team rosters on the roster page
+function displayRosters() {
+    // Loop through each team and populate the roster list
+    teams.forEach((team, index) => {
+        const teamRosterElement = document.getElementById(`${team.name.replace(" ", "").toLowerCase()}Roster`);
+        const ul = teamRosterElement.querySelector('ul');
+        
+        team.roster.forEach(player => {
+            const li = document.createElement('li');
+            li.textContent = player.name;
+            ul.appendChild(li);
+        });
+    });
+}
+
+// On page load, check the current page
 window.onload = function() {
-    displayTeams();
+    const currentPage = window.location.pathname.split("/").pop();
+    
+    if (currentPage === "roster.html") {
+        // If the user is on the roster page, display the rosters
+        displayRosters();
+    } else {
+        // Otherwise, display the teams for game simulation
+        displayTeams();
+    }
+
     const savedTeams = localStorage.getItem('teams');
     if (savedTeams) {
-        // Load saved data from localStorage
-        Object.assign(teams, JSON.parse(savedTeams));
+        Object.assign(teams, JSON.parse(savedTeams)); // Load saved data
     }
 };
 
 // Event listener for the "Simulate Game" button
-document.getElementById("simulateGame").addEventListener("click", simulateGame);
+document.getElementById("simulateGame")?.addEventListener("click", simulateGame);
