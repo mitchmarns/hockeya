@@ -154,7 +154,6 @@
     </section>
 
     <script>
-        // Sample player data with additional stats for realistic simulation
         const teams = [
             {
                 name: "Team A",
@@ -198,6 +197,25 @@
             },
         ];
 
+        // Load data from localStorage
+        function loadSeasonData() {
+            const savedTeams = JSON.parse(localStorage.getItem("teams"));
+            if (savedTeams) {
+                teams.forEach((team, index) => {
+                    team.wins = savedTeams[index].wins;
+                    team.losses = savedTeams[index].losses;
+                    team.players = savedTeams[index].players.map((player, playerIndex) => {
+                        return { ...team.players[playerIndex], ...player };
+                    });
+                });
+            }
+        }
+
+        // Save data to localStorage
+        function saveSeasonData() {
+            localStorage.setItem("teams", JSON.stringify(teams));
+        }
+
         // Function to display teams and players
         function displayTeams() {
             teams.forEach((team, index) => {
@@ -211,9 +229,12 @@
 
         // Function to simulate a game between two teams
         function simulateGame() {
-            // Randomly select two teams
-            const team1 = teams[Math.floor(Math.random() * teams.length)];
-            const team2 = teams[Math.floor(Math.random() * teams.length)];
+            // Randomly select two different teams
+            let team1, team2;
+            do {
+                team1 = teams[Math.floor(Math.random() * teams.length)];
+                team2 = teams[Math.floor(Math.random() * teams.length)];
+            } while (team1 === team2); // Ensure they are different teams
 
             // Simulate the game result based on player stats
             const team1Strength = calculateTeamStrength(team1);
@@ -221,15 +242,17 @@
             const team1Score = Math.floor(Math.random() * team1Strength);
             const team2Score = Math.floor(Math.random() * team2Strength);
 
-            // Determine winner
+            // Assign goals to the players of the winning team
             if (team1Score > team2Score) {
                 team1.wins++;
                 team2.losses++;
                 document.getElementById("game-result").textContent = `${team1.name} wins ${team1Score} - ${team2Score} over ${team2.name}`;
+                assignGoals(team1, team1Score);
             } else if (team2Score > team1Score) {
                 team2.wins++;
                 team1.losses++;
                 document.getElementById("game-result").textContent = `${team2.name} wins ${team2Score} - ${team1Score} over ${team1.name}`;
+                assignGoals(team2, team2Score);
             } else {
                 document.getElementById("game-result").textContent = `It's a tie: ${team1.name} ${team1Score} - ${team2Score} ${team2.name}`;
             }
@@ -237,6 +260,18 @@
             // Update player stats in the table
             updatePlayerStats();
             updateSeasonRecord();
+
+            // Save season data to localStorage
+            saveSeasonData();
+        }
+
+        // Assign goals to players of the winning team
+        function assignGoals(team, score) {
+            const totalPlayerStrength = team.players.reduce((total, player) => total + player.shooting, 0);
+            team.players.forEach(player => {
+                const playerGoalContribution = (player.shooting / totalPlayerStrength) * score;
+                player.goals += Math.round(playerGoalContribution);
+            });
         }
 
         // Calculate the overall strength of a team based on its players
@@ -284,9 +319,13 @@
             });
             updateSeasonRecord();
             displayTeams();
+
+            // Save the reset data to localStorage
+            saveSeasonData();
         }
 
         // Initialize the page with team data
+        loadSeasonData();
         displayTeams();
     </script>
 </body>
