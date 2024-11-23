@@ -51,10 +51,13 @@ function populateTeamDropdowns() {
         const option = document.createElement("option");
         option.value = index;
         option.textContent = team.name;
-        team1Select.appendChild(option);
+
+        // Append to both dropdowns
+        team1Select.appendChild(option.cloneNode(true));
         team2Select.appendChild(option.cloneNode(true));
     });
 }
+
 
 // Simulate a game between two teams
 function simulateGame() {
