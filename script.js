@@ -177,22 +177,10 @@ function displayAssists(team, teamName) {
 // Event listener for simulating the game
 document.getElementById("simulateGame").addEventListener("click", simulateGame);
 
-// Populate team dropdowns on page load
-document.addEventListener('DOMContentLoaded', populateTeamDropdowns);
+let selectedTeams = { team1: null, team2: null };
 
-function populateTeamDropdowns() {
-    const team1Select = document.getElementById("team1Select");
-    const team2Select = document.getElementById("team2Select");
-
-    teams.forEach((team, index) => {
-        const option1 = document.createElement("option");
-        option1.value = index;
-        option1.textContent = team.name;
-        team1Select.appendChild(option1);
-
-        const option2 = document.createElement("option");
-        option2.value = index;
-        option2.textContent = team.name;
-        team2Select.appendChild(option2);
-    });
+function selectTeam(teamIndex, teamName) {
+    selectedTeams[teamName] = teamIndex;
+    document.getElementById(`${teamName}Name`).textContent = `${teamName} selected: ${teams[teamIndex].name}`;
+}
 }
