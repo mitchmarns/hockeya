@@ -8,15 +8,39 @@
 </head>
 <body>
     <h1>Hockey Roleplay Game</h1>
+    
+    <!-- Team Display -->
+    <div id="teams">
+        <h2>Teams</h2>
+        <div id="team1">
+            <h3>Team 1: The Sharks</h3>
+            <ul id="team1-roster"></ul>
+        </div>
+        <div id="team2">
+            <h3>Team 2: The Eagles</h3>
+            <ul id="team2-roster"></ul>
+        </div>
+        <div id="team3">
+            <h3>Team 3: The Wolves</h3>
+            <ul id="team3-roster"></ul>
+        </div>
+        <div id="team4">
+            <h3>Team 4: The Bears</h3>
+            <ul id="team4-roster"></ul>
+        </div>
+    </div>
+    
     <div id="game">
         <button id="simulateGame">Simulate Game</button>
         <div id="scoreboard">
-            <p>Player 1: <span id="player1Goals">0</span> Goals</p>
-            <p>Player 2: <span id="player2Goals">0</span> Goals</p>
+            <p>Team 1: <span id="team1Goals">0</span> Goals</p>
+            <p>Team 2: <span id="team2Goals">0</span> Goals</p>
+            <p>Team 3: <span id="team3Goals">0</span> Goals</p>
+            <p>Team 4: <span id="team4Goals">0</span> Goals</p>
         </div>
         <div id="gameResult"></div>
     </div>
+    
     <script src="script.js"></script>
 </body>
 </html>
-
