@@ -5,26 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hockey Game Simulator</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .team-selection {
-            margin-bottom: 20px;
-        }
-        #gameStats {
-            margin-top: 20px;
-        }
-        h3 {
-            margin-top: 10px;
-        }
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-        li {
-            padding: 2px 0;
-        }
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .team-selection { margin-bottom: 20px; }
+        #gameStats { margin-top: 20px; }
+        h3 { margin-top: 10px; }
+        ul { list-style-type: none; padding: 0; }
+        li { padding: 2px 0; }
     </style>
 </head>
 <body>
@@ -52,13 +38,14 @@
 
     <p id="gameResult"></p>
 
-    <!-- Container for penalties and assists -->
     <div id="gameStats">
         <div id="team1Penalties"></div>
         <div id="team1Assists"></div>
         <div id="team2Penalties"></div>
         <div id="team2Assists"></div>
     </div>
+
+    <p><a href="roster.html">View Team Rosters</a></p>
 
     <script src="script.js"></script>
 </body>
