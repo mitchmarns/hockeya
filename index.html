@@ -327,6 +327,9 @@
             updateSeasonRecord();
             displayTeams();
 
+            // Clear the saved data from localStorage
+            localStorage.removeItem("teams");
+            
             // Save the reset data to localStorage
             saveSeasonData();
         }
