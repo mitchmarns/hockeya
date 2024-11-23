@@ -44,13 +44,28 @@ const teams = [
 
 
 // Simulate a game between two teams
+document.getElementById("simulateGame").addEventListener("click", simulateGame);
+
 function simulateGame() {
-    const team1Index = parseInt(document.getElementById("team1Select").value);
-    const team2Index = parseInt(document.getElementById("team2Select").value);
+    const team1Select = document.getElementById("team1Select");
+    const team2Select = document.getElementById("team2Select");
+
+    const team1Index = parseInt(team1Select.value);
+    const team2Index = parseInt(team2Select.value);
+
+    if (team1Index === team2Index) {
+        alert("Please select two different teams.");
+        return;
+    }
 
     const team1 = teams[team1Index];
     const team2 = teams[team2Index];
 
+    // Simulate game logic...
+    document.getElementById("team1Name").textContent = `Team 1: ${team1.name}`;
+    document.getElementById("team2Name").textContent = `Team 2: ${team2.name}`;
+    document.getElementById("gameResult").textContent = "Game simulation complete!";
+}
 
     // Simulate penalties
     simulatePenalties(team1);
