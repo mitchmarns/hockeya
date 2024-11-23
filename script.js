@@ -48,13 +48,15 @@ function populateTeamDropdowns() {
     const team2Select = document.getElementById("team2Select");
 
     teams.forEach((team, index) => {
-        const option = document.createElement("option");
-        option.value = index;
-        option.textContent = team.name;
+        const option1 = document.createElement("option");
+        option1.value = index;
+        option1.textContent = team.name;
+        team1Select.appendChild(option1);
 
-        // Append to both dropdowns
-        team1Select.appendChild(option.cloneNode(true));
-        team2Select.appendChild(option.cloneNode(true));
+        const option2 = document.createElement("option");
+        option2.value = index;
+        option2.textContent = team.name;
+        team2Select.appendChild(option2);
     });
 }
 
@@ -194,4 +196,6 @@ function displayAssists(team, teamName) {
 document.getElementById("simulateGame").addEventListener("click", simulateGame);
 
 // Populate team dropdowns on page load
-window.onload = populateTeamDropdowns;
+window.onload = function() {
+    populateTeamDropdowns();
+};
