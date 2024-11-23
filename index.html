@@ -5,88 +5,199 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hockey Game Simulator</title>
     <style>
+        /* Global styles */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
             margin: 0;
             padding: 0;
+            color: #333;
+            line-height: 1.6;
         }
 
         header {
-            background-color: #333;
+            background: linear-gradient(to right, #3a3a3a, #555);
             color: white;
+            padding: 1.5rem 0;
             text-align: center;
-            padding: 1em 0;
+            font-size: 2rem;
+            letter-spacing: 1px;
         }
 
-        h1, h2 {
-            margin: 0.5em 0;
+        h1 {
+            margin: 0;
         }
 
+        h2, h3 {
+            margin-bottom: 10px;
+        }
+
+        /* Container styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Team and Player Boxes */
         .team-container {
             display: flex;
-            justify-content: space-around;
-            padding: 20px;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
         }
 
         .team {
             background-color: #fff;
-            border: 2px solid #333;
-            padding: 15px;
-            width: 200px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            width: calc(25% - 20px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .team:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .team h3 {
+            font-size: 1.4rem;
+            color: #333;
         }
 
         ul.players {
             list-style: none;
             padding: 0;
+            margin: 10px 0;
         }
 
         ul.players li {
-            margin-bottom: 10px;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        ul.players li span {
+            font-weight: bold;
         }
 
         button {
-            padding: 10px 20px;
-            background-color: #333;
+            background-color: #007bff;
             color: white;
+            padding: 12px 20px;
             border: none;
+            border-radius: 5px;
             cursor: pointer;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
-            background-color: #555;
+            background-color: #0056b3;
         }
 
+        /* Game result & stats */
         #game-result {
+            background-color: #f1f1f1;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
             margin-top: 20px;
-            padding: 10px;
-            background-color: #e0e0e0;
             text-align: center;
+            font-size: 1.2rem;
+            color: #333;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
+        /* Stats Table */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        table, th, td {
-            border: 1px solid #333;
+            margin-top: 30px;
         }
 
         th, td {
-            padding: 10px;
+            padding: 12px;
             text-align: center;
+            border-bottom: 1px solid #ddd;
+            font-size: 1rem;
         }
 
         th {
-            background-color: #f0f0f0;
+            background-color: #007bff;
+            color: white;
+            text-transform: uppercase;
         }
 
+        td {
+            background-color: #fafafa;
+        }
+
+        td.penalty {
+            color: #d9534f;
+        }
+
+        /* Season record box */
         .record {
-            margin-top: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
             text-align: center;
         }
+
+        .record p {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0;
+            color: #333;
+        }
+
+        .penalty {
+            color: #e74c3c;
+        }
+
+        .btn-reset {
+            background-color: #f39c12;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-reset:hover {
+            background-color: #e67e22;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .team-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .team {
+                width: 90%;
+                margin-bottom: 20px;
+            }
+
+            button {
+                width: 100%;
+                padding: 15px;
+            }
+
+            table, .record {
+                margin-top: 20px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -94,64 +205,71 @@
         <h1>Hockey Game Simulator</h1>
     </header>
 
-    <section id="teams">
-        <h2>Teams</h2>
-        <div class="team-container">
-            <div id="team1" class="team">
-                <h3>Team A</h3>
-                <ul class="players">
-                    <!-- Players will be dynamically added here -->
-                </ul>
+    <div class="container">
+        <!-- Teams Section -->
+        <section id="teams">
+            <h2>Teams</h2>
+            <div class="team-container">
+                <div id="team1" class="team">
+                    <h3>Team A</h3>
+                    <ul class="players">
+                        <!-- Players will be dynamically added here -->
+                    </ul>
+                </div>
+                <div id="team2" class="team">
+                    <h3>Team B</h3>
+                    <ul class="players">
+                        <!-- Players will be dynamically added here -->
+                    </ul>
+                </div>
+                <div id="team3" class="team">
+                    <h3>Team C</h3>
+                    <ul class="players">
+                        <!-- Players will be dynamically added here -->
+                    </ul>
+                </div>
+                <div id="team4" class="team">
+                    <h3>Team D</h3>
+                    <ul class="players">
+                        <!-- Players will be dynamically added here -->
+                    </ul>
+                </div>
             </div>
-            <div id="team2" class="team">
-                <h3>Team B</h3>
-                <ul class="players">
-                    <!-- Players will be dynamically added here -->
-                </ul>
-            </div>
-            <div id="team3" class="team">
-                <h3>Team C</h3>
-                <ul class="players">
-                    <!-- Players will be dynamically added here -->
-                </ul>
-            </div>
-            <div id="team4" class="team">
-                <h3>Team D</h3>
-                <ul class="players">
-                    <!-- Players will be dynamically added here -->
-                </ul>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <section id="game-section">
-        <h2>Simulate Game</h2>
-        <button onclick="simulateGame()">Simulate Game</button>
-        <div id="game-result"></div>
-    </section>
+        <!-- Game Simulation Section -->
+        <section id="game-section">
+            <h2>Simulate Game</h2>
+            <button onclick="simulateGame()">Simulate Game</button>
+            <div id="game-result"></div>
+        </section>
 
-    <section id="stats">
-        <h2>Player Stats</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Player Name</th>
-                    <th>Goals</th>
-                    <th>Assists</th>
-                    <th>Points</th>
-                </tr>
-            </thead>
-            <tbody id="player-stats">
-                <!-- Player stats will be displayed here -->
-            </tbody>
-        </table>
-    </section>
+        <!-- Stats Section -->
+        <section id="stats">
+            <h2>Player Stats</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Player Name</th>
+                        <th>Goals</th>
+                        <th>Assists</th>
+                        <th>Points</th>
+                        <th>Penalties</th>
+                    </tr>
+                </thead>
+                <tbody id="player-stats">
+                    <!-- Player stats will be displayed here -->
+                </tbody>
+            </table>
+        </section>
 
-    <section class="record">
-        <h2>Season Record</h2>
-        <p id="season-record">Wins: 0 | Losses: 0</p>
-        <button onclick="resetSeason()">Reset Season</button>
-    </section>
+        <!-- Season Record Section -->
+        <section class="record">
+            <h2>Season Record</h2>
+            <p id="season-record">Wins: 0 | Losses: 0</p>
+            <button class="btn-reset" onclick="resetSeason()">Reset Season</button>
+        </section>
+    </div>
 
     <script>
         const defaultTeams = [
@@ -159,40 +277,44 @@
                 name: "Team A",
                 wins: 0,
                 losses: 0,
+                points: 0,
                 players: [
-                    { name: "Player A1", goals: 0, assists: 0, shooting: 80, passing: 75, defense: 70, stamina: 85 },
-                    { name: "Player A2", goals: 0, assists: 0, shooting: 85, passing: 80, defense: 75, stamina: 80 },
-                    { name: "Player A3", goals: 0, assists: 0, shooting: 90, passing: 85, defense: 80, stamina: 90 },
+                    { name: "Player A1", goals: 0, assists: 0, penalties: 0, shooting: 80, passing: 75, defense: 70, stamina: 85 },
+                    { name: "Player A2", goals: 0, assists: 0, penalties: 0, shooting: 85, passing: 80, defense: 75, stamina: 80 },
+                    { name: "Player A3", goals: 0, assists: 0, penalties: 0, shooting: 90, passing: 85, defense: 80, stamina: 90 },
                 ],
             },
             {
                 name: "Team B",
                 wins: 0,
                 losses: 0,
+                points: 0,
                 players: [
-                    { name: "Player B1", goals: 0, assists: 0, shooting: 75, passing: 70, defense: 80, stamina: 80 },
-                    { name: "Player B2", goals: 0, assists: 0, shooting: 80, passing: 75, defense: 85, stamina: 70 },
-                    { name: "Player B3", goals: 0, assists: 0, shooting: 70, passing: 80, defense: 90, stamina: 85 },
+                    { name: "Player B1", goals: 0, assists: 0, penalties: 0, shooting: 75, passing: 70, defense: 80, stamina: 80 },
+                    { name: "Player B2", goals: 0, assists: 0, penalties: 0, shooting: 80, passing: 75, defense: 85, stamina: 70 },
+                    { name: "Player B3", goals: 0, assists: 0, penalties: 0, shooting: 70, passing: 80, defense: 90, stamina: 85 },
                 ],
             },
             {
                 name: "Team C",
                 wins: 0,
                 losses: 0,
+                points: 0,
                 players: [
-                    { name: "Player C1", goals: 0, assists: 0, shooting: 85, passing: 75, defense: 80, stamina: 85 },
-                    { name: "Player C2", goals: 0, assists: 0, shooting: 90, passing: 80, defense: 85, stamina: 80 },
-                    { name: "Player C3", goals: 0, assists: 0, shooting: 75, passing: 70, defense: 75, stamina: 90 },
+                    { name: "Player C1", goals: 0, assists: 0, penalties: 0, shooting: 85, passing: 75, defense: 80, stamina: 85 },
+                    { name: "Player C2", goals: 0, assists: 0, penalties: 0, shooting: 90, passing: 80, defense: 85, stamina: 80 },
+                    { name: "Player C3", goals: 0, assists: 0, penalties: 0, shooting: 75, passing: 70, defense: 75, stamina: 90 },
                 ],
             },
             {
                 name: "Team D",
                 wins: 0,
                 losses: 0,
+                points: 0,
                 players: [
-                    { name: "Player D1", goals: 0, assists: 0, shooting: 70, passing: 80, defense: 75, stamina: 80 },
-                    { name: "Player D2", goals: 0, assists: 0, shooting: 75, passing: 85, defense: 80, stamina: 75 },
-                    { name: "Player D3", goals: 0, assists: 0, shooting: 80, passing: 75, defense: 85, stamina: 85 },
+                    { name: "Player D1", goals: 0, assists: 0, penalties: 0, shooting: 70, passing: 80, defense: 75, stamina: 80 },
+                    { name: "Player D2", goals: 0, assists: 0, penalties: 0, shooting: 75, passing: 85, defense: 80, stamina: 75 },
+                    { name: "Player D3", goals: 0, assists: 0, penalties: 0, shooting: 80, passing: 75, defense: 85, stamina: 85 },
                 ],
             },
         ];
@@ -215,97 +337,4 @@
         }
 
         // Display the teams and players on the page
-        function displayTeams() {
-            teams.forEach((team, index) => {
-                const teamElement = document.getElementById(`team${index + 1}`);
-                const playerList = teamElement.querySelector(".players");
-                playerList.innerHTML = team.players
-                    .map(player => `<li>${player.name}: ${player.goals} goals, ${player.assists} assists</li>`)
-                    .join('');
-            });
-        }
-
-        // Simulate a game between two randomly chosen teams
-        function simulateGame() {
-            let team1, team2;
-            do {
-                team1 = teams[Math.floor(Math.random() * teams.length)];
-                team2 = teams[Math.floor(Math.random() * teams.length)];
-            } while (team1 === team2);
-
-            const team1Score = Math.floor(Math.random() * 3) + 3;
-            const team2Score = Math.floor(Math.random() * 3) + 3;
-
-            // Determine the result
-            if (team1Score > team2Score) {
-                team1.wins++;
-                team2.losses++;
-                document.getElementById("game-result").textContent = `${team1.name} wins ${team1Score} - ${team2Score} over ${team2.name}`;
-                assignGoals(team1, team1Score);
-            } else if (team2Score > team1Score) {
-                team2.wins++;
-                team1.losses++;
-                document.getElementById("game-result").textContent = `${team2.name} wins ${team2Score} - ${team1Score} over ${team1.name}`;
-                assignGoals(team2, team2Score);
-            } else {
-                document.getElementById("game-result").textContent = `It's a tie: ${team1.name} ${team1Score} - ${team2Score} ${team2.name}`;
-            }
-
-            // Update player stats
-            updatePlayerStats();
-            updateSeasonRecord();
-            saveSeasonData();
-        }
-
-        // Assign goals to players of the winning team
-        function assignGoals(team, score) {
-            const totalPlayerStrength = team.players.reduce((total, player) => total + player.shooting, 0);
-            const goalsRemaining = score;
-
-            team.players.forEach(player => {
-                let playerGoals = Math.floor(Math.random() * 2);
-                if (goalsRemaining > 0) {
-                    playerGoals = Math.min(playerGoals, goalsRemaining);
-                    player.goals += playerGoals;
-                }
-            });
-        }
-
-        // Update the player stats table
-        function updatePlayerStats() {
-            const statsTable = document.getElementById("player-stats");
-            statsTable.innerHTML = "";
-            teams.forEach(team => {
-                team.players.forEach(player => {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${player.name}</td>
-                        <td>${player.goals}</td>
-                        <td>${player.assists}</td>
-                        <td>${player.goals + player.assists}</td>
-                    `;
-                    statsTable.appendChild(row);
-                });
-            });
-        }
-
-        // Update the season record
-        function updateSeasonRecord() {
-            const seasonRecord = teams.map(team => `${team.name}: ${team.wins}W - ${team.losses}L`).join('<br>');
-            document.getElementById("season-record").innerHTML = seasonRecord;
-        }
-
-        // Reset the season
-        function resetSeason() {
-            teams = JSON.parse(JSON.stringify(defaultTeams));  // Reset teams to the default values
-            updateSeasonRecord();
-            displayTeams();
-            saveSeasonData();  // Save the reset data to localStorage
-        }
-
-        // Initialize page
-        loadSeasonData();
-        displayTeams();
-    </script>
-</body>
-</html>
+        function displayTeams()
