@@ -85,6 +85,7 @@ function simulateGame() {
 
     // Optionally, save the stats to localStorage
     localStorage.setItem('teams', JSON.stringify(teams));
+    
 
     // Display Penalties and Assists
     displayStats(team1, team2);
@@ -175,9 +176,13 @@ function populateTeamDropdowns() {
 }
 window.onload = function() {
     const teams = JSON.parse(localStorage.getItem('teams'));
+    if (!teams) {
+        console.error("No teams data found in localStorage.");
+        return;
+    }
 
-    // Display rosters for each team
-    teams.forEach((team, index) => {
+    // Populate each team's roster
+    teams.forEach((team) => {
         const rosterList = document.getElementById(`${team.name.toLowerCase().replace(" ", "")}Roster`);
         team.roster.forEach(player => {
             const li = document.createElement('li');
