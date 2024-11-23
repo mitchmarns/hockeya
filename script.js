@@ -173,7 +173,19 @@ function populateTeamDropdowns() {
         team2Select.appendChild(option.cloneNode(true));  // Add the same options to team2 dropdown
     });
 }
+window.onload = function() {
+    const teams = JSON.parse(localStorage.getItem('teams'));
 
+    // Display rosters for each team
+    teams.forEach((team, index) => {
+        const rosterList = document.getElementById(`${team.name.toLowerCase().replace(" ", "")}Roster`);
+        team.roster.forEach(player => {
+            const li = document.createElement('li');
+            li.textContent = player.name;
+            rosterList.appendChild(li);
+        });
+    });
+};
 // Event listener for simulating the game
 document.getElementById("simulateGame").addEventListener("click", simulateGame);
 
