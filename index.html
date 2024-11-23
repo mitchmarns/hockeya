@@ -19,7 +19,6 @@
     <h1>Hockey Game Simulator</h1>
 
     <div class="team-selection">
-<h3>Select Team 1:</h3>
 <select id="team1Select">
     <option value="0">Rangers</option>
     <option value="1">Devils</option>
@@ -33,6 +32,15 @@
     <option value="2">Sabres</option>
     <option value="3">Islanders</option>
 </select>
+
+<button id="simulateGame">Simulate Game</button>
+
+<div id="results">
+    <p id="team1Name"></p>
+    <p id="team2Name"></p>
+    <p id="gameResult"></p>
+</div>
+
 
 <!-- Display selected teams -->
 <h4 id="team1Name">Team 1: None selected</h4>
