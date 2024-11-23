@@ -1,7 +1,7 @@
 // Teams and players data
 const teams = [
     {
-        name: "The Sharks",
+        name: "Rangers",
         roster: [
             { name: "Player 1", goals: 0, assists: [], penalties: [] },
             { name: "Player 2", goals: 0, assists: [], penalties: [] },
@@ -11,7 +11,7 @@ const teams = [
         ]
     },
     {
-        name: "The Eagles",
+        name: "Devils",
         roster: [
             { name: "Player 1", goals: 0, assists: [], penalties: [] },
             { name: "Player 2", goals: 0, assists: [], penalties: [] },
@@ -21,7 +21,7 @@ const teams = [
         ]
     },
     {
-        name: "The Wolves",
+        name: "Sabres",
         roster: [
             { name: "Player 1", goals: 0, assists: [], penalties: [] },
             { name: "Player 2", goals: 0, assists: [], penalties: [] },
@@ -31,7 +31,7 @@ const teams = [
         ]
     },
     {
-        name: "The Bears",
+        name: "Islanders",
         roster: [
             { name: "Player 1", goals: 0, assists: [], penalties: [] },
             { name: "Player 2", goals: 0, assists: [], penalties: [] },
@@ -44,34 +44,25 @@ const teams = [
 
 // Simulate a game between two teams
 function simulateGame() {
-    // Get selected teams from dropdowns
     const team1Index = parseInt(document.getElementById("team1Select").value);
     const team2Index = parseInt(document.getElementById("team2Select").value);
 
     const team1 = teams[team1Index];
     const team2 = teams[team2Index];
 
-    // Simulate penalties
     simulatePenalties(team1);
     simulatePenalties(team2);
-
-    // Simulate goals for each player and assign assists
     simulateGoals(team1);
     simulateGoals(team2);
 
-    // Calculate total goals for each team
     const team1Goals = team1.roster.reduce((acc, player) => acc + player.goals, 0);
     const team2Goals = team2.roster.reduce((acc, player) => acc + player.goals, 0);
 
-    // Update the scoreboard
     document.getElementById("team1Goals").textContent = team1Goals;
     document.getElementById("team2Goals").textContent = team2Goals;
-
-    // Display the team names
     document.getElementById("team1Name").textContent = `Team 1: ${team1.name}`;
     document.getElementById("team2Name").textContent = `Team 2: ${team2.name}`;
 
-    // Determine winner or tie
     let result;
     if (team1Goals > team2Goals) {
         result = `${team1.name} wins!`;
@@ -83,36 +74,28 @@ function simulateGame() {
 
     document.getElementById("gameResult").textContent = result;
 
-    // Optionally, save the stats to localStorage
     localStorage.setItem('teams', JSON.stringify(teams));
-    
 
-    // Display Penalties and Assists
     displayStats(team1, team2);
 }
 
-// Simulate penalties for a team
 function simulatePenalties(team) {
     team.roster.forEach(player => {
-        // Randomly assign a penalty (minor or major)
-        if (Math.random() < 0.2) {  // 20% chance of getting a penalty
+        if (Math.random() < 0.2) {
             const penaltyType = Math.random() < 0.5 ? "Minor" : "Major";
-            const penaltyTime = penaltyType === "Minor" ? 2 : 5; // 2 minutes or 5 minutes
+            const penaltyTime = penaltyType === "Minor" ? 2 : 5;
             player.penalties.push(`${penaltyType} (${penaltyTime} mins)`);
         }
     });
 }
 
-// Simulate goals and assists for a team
 function simulateGoals(team) {
     team.roster.forEach(player => {
-        // 50% chance for each player to score a goal
         if (Math.random() < 0.5) {
             player.goals += 1;
 
-            // Select random players for assists (up to 2 players for each goal)
-            const numAssists = Math.floor(Math.random() * 2) + 1; // 1 or 2 assists
-            const availableAssistants = team.roster.filter(p => p !== player);  // Exclude the scorer
+            const numAssists = Math.floor(Math.random() * 2) + 1;
+            const availableAssistants = team.roster.filter(p => p !== player);
 
             for (let i = 0; i < numAssists; i++) {
                 const randomAssistPlayer = availableAssistants[Math.floor(Math.random() * availableAssistants.length)];
@@ -124,75 +107,70 @@ function simulateGoals(team) {
     });
 }
 
-// Display penalties and assists in the UI
 function displayStats(team1, team2) {
-    // Display penalties for both teams
     displayPenalties(team1, "team1");
     displayPenalties(team2, "team2");
-
-    // Display assists for both teams
     displayAssists(team1, "team1");
     displayAssists(team2, "team2");
 }
 
-// Display penalties for each team
 function displayPenalties(team, teamName) {
     const penaltiesContainer = document.getElementById(`${teamName}Penalties`);
     penaltiesContainer.innerHTML = `<h4>${team.name} Penalties:</h4>`;
-
     team.roster.forEach(player => {
         if (player.penalties.length > 0) {
             const penaltyList = player.penalties.map(penalty => `<li>${penalty}</li>`).join('');
-            penaltiesContainer.innerHTML += `<p>${player.name}: <ul>${penaltyList}</ul></p>`;
-        }
-    });
-}
+            penaltiesContainer.innerHTML += `<p>${player.name}: <ul>${penaltyList}</ulHere's the complete code with the updated team names (Rangers, Devils, Sabres, Islanders). Please make sure that you have two HTML files (`index.html` and `roster.html`), and the JavaScript file (`script.js`) is included.
 
-// Display assists for each team
-function displayAssists(team, teamName) {
-    const assistsContainer = document.getElementById(`${teamName}Assists`);
-    assistsContainer.innerHTML = `<h4>${team.name} Assists:</h4>`;
+### **index.html**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hockey Game Simulator</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .team-selection { margin-bottom: 20px; }
+        #gameStats { margin-top: 20px; }
+        h3 { margin-top: 10px; }
+        ul { list-style-type: none; padding: 0; }
+        li { padding: 2px 0; }
+    </style>
+</head>
+<body>
 
-    team.roster.forEach(player => {
-        if (player.assists.length > 0) {
-            const assistsList = player.assists.map(assist => `<li>${assist}</li>`).join('');
-            assistsContainer.innerHTML += `<p>${player.name}: <ul>${assistsList}</ul></p>`;
-        }
-    });
-}
+    <h1>Hockey Game Simulator</h1>
 
-// Populate the team dropdowns
-function populateTeamDropdowns() {
-    const team1Select = document.getElementById("team1Select");
-    const team2Select = document.getElementById("team2Select");
+    <div class="team-selection">
+        <label for="team1Select">Select Team 1: </label>
+        <select id="team1Select"></select>
+        
+        <label for="team2Select">Select Team 2: </label>
+        <select id="team2Select"></select>
+        
+        <button id="simulateGame">Simulate Game</button>
+    </div>
 
-    teams.forEach((team, index) => {
-        const option = document.createElement("option");
-        option.value = index;
-        option.textContent = team.name;
-        team1Select.appendChild(option);
-        team2Select.appendChild(option.cloneNode(true));  // Add the same options to team2 dropdown
-    });
-}
-window.onload = function() {
-    const teams = JSON.parse(localStorage.getItem('teams'));
-    if (!teams) {
-        console.error("No teams data found in localStorage.");
-        return;
-    }
+    <h3 id="team1Name"></h3>
+    <h3 id="team2Name"></h3>
 
-    // Populate each team's roster
-    teams.forEach((team) => {
-        const rosterList = document.getElementById(`${team.name.toLowerCase().replace(" ", "")}Roster`);
-        team.roster.forEach(player => {
-            const li = document.createElement('li');
-            li.textContent = player.name;
-            rosterList.appendChild(li);
-        });
-    });
-};
-// Event listener for simulating the game
-document.getElementById("simulateGame").addEventListener("click", simulateGame);
+    <div>
+        <p><strong>Score:</strong></p>
+        <p>Team 1: <span id="team1Goals">0</span></p>
+        <p>Team 2: <span id="team2Goals">0</span></p>
+    </div>
 
-// Populate team dropdowns on page load
-populateTeamDropdowns();
+    <p id="gameResult"></p>
+
+    <div id="gameStats">
+        <div id="team1Penalties"></div>
+        <div id="team1Assists"></div>
+        <div id="team2Penalties"></div>
+        <div id="team2Assists"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
