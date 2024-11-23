@@ -52,7 +52,7 @@ function populateTeamDropdowns() {
         option.value = index;
         option.textContent = team.name;
         team1Select.appendChild(option);
-        team2Select.appendChild(option.cloneNode(true));  // Add the same options to team2 dropdown
+        team2Select.appendChild(option.cloneNode(true));
     });
 }
 
@@ -165,20 +165,6 @@ function displayAssists(team, teamName) {
             const assistsList = player.assists.map(assist => `<li>${assist}</li>`).join('');
             assistsContainer.innerHTML += `<p>${player.name}: <ul>${assistsList}</ul></p>`;
         }
-    });
-}
-
-// Populate the team dropdowns
-function populateTeamDropdowns() {
-    const team1Select = document.getElementById("team1Select");
-    const team2Select = document.getElementById("team2Select");
-
-    teams.forEach((team, index) => {
-        const option = document.createElement("option");
-        option.value = index;
-        option.textContent = team.name;
-        team1Select.appendChild(option);
-        team2Select.appendChild(option.cloneNode(true));
     });
 }
 
