@@ -42,25 +42,6 @@ const teams = [
     }
 ];
 
-// Display teams and rosters in HTML (optional)
-function displayTeams() {
-    const team1Select = document.getElementById('team1Select');
-    const team2Select = document.getElementById('team2Select');
-
-    teams.forEach((team, index) => {
-        // Populate dropdowns with team names
-        const option1 = document.createElement('option');
-        option1.value = index;
-        option1.textContent = team.name;
-        team1Select.appendChild(option1);
-
-        const option2 = document.createElement('option');
-        option2.value = index;
-        option2.textContent = team.name;
-        team2Select.appendChild(option2);
-    });
-}
-
 // Simulate a game between two teams
 function simulateGame() {
     // Get selected teams from dropdowns
@@ -70,12 +51,12 @@ function simulateGame() {
     const team1 = teams[team1Index];
     const team2 = teams[team2Index];
 
-    // Simulate goals for each player (0-3 goals per player)
+    // Simulate goals for each player (0-1 goals per player)
     team1.roster.forEach(player => {
-        player.goals = Math.floor(Math.random() * 4);
+        player.goals = Math.floor(Math.random() * 2); // 0 or 1 goal per player
     });
     team2.roster.forEach(player => {
-        player.goals = Math.floor(Math.random() * 4);
+        player.goals = Math.floor(Math.random() * 2); // 0 or 1 goal per player
     });
 
     // Calculate total goals for each team
