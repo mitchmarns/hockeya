@@ -51,6 +51,7 @@ function simulateGame() {
     const team1 = teams[team1Index];
     const team2 = teams[team2Index];
 
+
     // Simulate penalties
     simulatePenalties(team1);
     simulatePenalties(team2);
@@ -177,10 +178,5 @@ function displayAssists(team, teamName) {
 // Event listener for simulating the game
 document.getElementById("simulateGame").addEventListener("click", simulateGame);
 
-let selectedTeams = { team1: null, team2: null };
 
-function selectTeam(teamIndex, teamName) {
-    selectedTeams[teamName] = teamIndex;
-    document.getElementById(`${teamName}Name`).textContent = `${teamName} selected: ${teams[teamIndex].name}`;
-}
 }
