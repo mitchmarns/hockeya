@@ -42,24 +42,6 @@ const teams = [
     }
 ];
 
-// Populate the team dropdowns
-function populateTeamDropdowns() {
-    const team1Select = document.getElementById("team1Select");
-    const team2Select = document.getElementById("team2Select");
-
-    teams.forEach((team, index) => {
-        const option1 = document.createElement("option");
-        option1.value = index;
-        option1.textContent = team.name;
-        team1Select.appendChild(option1);
-
-        const option2 = document.createElement("option");
-        option2.value = index;
-        option2.textContent = team.name;
-        team2Select.appendChild(option2);
-    });
-}
-
 
 // Simulate a game between two teams
 function simulateGame() {
@@ -199,3 +181,20 @@ document.getElementById("simulateGame").addEventListener("click", simulateGame);
 window.onload = function() {
     populateTeamDropdowns();
 };
+
+function populateTeamDropdowns() {
+    const team1Select = document.getElementById("team1Select");
+    const team2Select = document.getElementById("team2Select");
+
+    teams.forEach((team, index) => {
+        const option1 = document.createElement("option");
+        option1.value = index;
+        option1.textContent = team.name;
+        team1Select.appendChild(option1);
+
+        const option2 = document.createElement("option");
+        option2.value = index;
+        option2.textContent = team.name;
+        team2Select.appendChild(option2);
+    });
+}
