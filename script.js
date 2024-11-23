@@ -133,6 +133,25 @@ function simulateGoals(team) {
     });
 }
 
+// Inside the simulateGame function
+
+const gameResult = {
+    team1Name: team1.name,
+    team2Name: team2.name,
+    team1Goals: team1Goals,
+    team2Goals: team2Goals,
+    winner: result, // 'Team 1 wins!', 'Team 2 wins!', or 'It's a tie!'
+};
+
+// Get existing game history from localStorage
+const gameHistory = JSON.parse(localStorage.getItem('gameHistory')) || [];
+
+// Add the new game to the history
+gameHistory.push(gameResult);
+
+// Save updated history back to localStorage
+localStorage.setItem('gameHistory', JSON.stringify(gameHistory));
+
 // Display penalties and assists in the UI
 function displayStats(team1, team2) {
     displayPenalties(team1, "team1");
