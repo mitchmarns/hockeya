@@ -178,9 +178,7 @@ function displayAssists(team, teamName) {
 document.getElementById("simulateGame").addEventListener("click", simulateGame);
 
 // Populate team dropdowns on page load
-window.onload = function() {
-    populateTeamDropdowns();
-};
+document.addEventListener('DOMContentLoaded', populateTeamDropdowns);
 
 function populateTeamDropdowns() {
     const team1Select = document.getElementById("team1Select");
