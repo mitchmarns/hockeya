@@ -292,7 +292,7 @@
                 players: [
                     { name: "Player B1", goals: 0, assists: 0, penalties: 0, shooting: 75, passing: 70, defense: 80, stamina: 80 },
                     { name: "Player B2", goals: 0, assists: 0, penalties: 0, shooting: 80, passing: 75, defense: 85, stamina: 70 },
-                    { name: "Player B3", goals: 0, assists: 0, penalties: 0, shooting: 70, passing: 80, defense: 90, stamina: 85 },
+                    { name: "Player B3", goals: 0, assists: 0, penalties: 0, shooting: 85, passing: 80, defense: 70, stamina: 90 },
                 ],
             },
             {
@@ -301,9 +301,9 @@
                 losses: 0,
                 points: 0,
                 players: [
-                    { name: "Player C1", goals: 0, assists: 0, penalties: 0, shooting: 85, passing: 75, defense: 80, stamina: 85 },
-                    { name: "Player C2", goals: 0, assists: 0, penalties: 0, shooting: 90, passing: 80, defense: 85, stamina: 80 },
-                    { name: "Player C3", goals: 0, assists: 0, penalties: 0, shooting: 75, passing: 70, defense: 75, stamina: 90 },
+                    { name: "Player C1", goals: 0, assists: 0, penalties: 0, shooting: 80, passing: 85, defense: 75, stamina: 80 },
+                    { name: "Player C2", goals: 0, assists: 0, penalties: 0, shooting: 85, passing: 80, defense: 80, stamina: 85 },
+                    { name: "Player C3", goals: 0, assists: 0, penalties: 0, shooting: 70, passing: 75, defense: 90, stamina: 85 },
                 ],
             },
             {
@@ -312,29 +312,117 @@
                 losses: 0,
                 points: 0,
                 players: [
-                    { name: "Player D1", goals: 0, assists: 0, penalties: 0, shooting: 70, passing: 80, defense: 75, stamina: 80 },
-                    { name: "Player D2", goals: 0, assists: 0, penalties: 0, shooting: 75, passing: 85, defense: 80, stamina: 75 },
-                    { name: "Player D3", goals: 0, assists: 0, penalties: 0, shooting: 80, passing: 75, defense: 85, stamina: 85 },
+                    { name: "Player D1", goals: 0, assists: 0, penalties: 0, shooting: 80, passing: 75, defense: 70, stamina: 85 },
+                    { name: "Player D2", goals: 0, assists: 0, penalties: 0, shooting: 75, passing: 80, defense: 75, stamina: 90 },
+                    { name: "Player D3", goals: 0, assists: 0, penalties: 0, shooting: 85, passing: 85, defense: 80, stamina: 75 },
                 ],
-            },
+            }
         ];
 
-        let teams = [];
+        let teams = JSON.parse(localStorage.getItem("teams")) || JSON.parse(JSON.stringify(defaultTeams));
 
-        // Load data from localStorage
-        function loadSeasonData() {
-            const savedTeams = JSON.parse(localStorage.getItem("teams"));
-            if (savedTeams) {
-                teams = savedTeams;
-            } else {
-                teams = JSON.parse(JSON.stringify(defaultTeams));  // Clone the default teams if no saved data
-            }
+        // Update the UI with team info
+        function displayTeams() {
+            teams.forEach((team, index) => {
+                const teamElement = document.getElementById(`team${index + 1}`);
+                const playerList = teamElement.querySelector(".players");
+                playerList.innerHTML = team.players
+                    .map(player => `<li>${player.name}: ${player.goals} goals, ${player.assists} assists, ${player.penalties} penalties</li>`)
+                    .join('');
+            });
         }
 
-        // Save data to localStorage
+        // Simulate a game between two randomly chosen teams
+        function simulateGame() {
+            let team1, team2;
+            do {
+                team1 = teams[Math.floor(Math.random() * teams.length)];
+                team2 = teams[Math.floor(Math.random() * teams.length)];
+            } while (team1 === team2);
+
+            const team1Score = Math.floor(Math.random() * 3) + 3;
+            const team2Score = Math.floor(Math.random() * 3) + 3;
+
+            const homeAdvantage = Math.random() < 0.5; // Randomly assign home/away advantage
+            let team1FinalScore = homeAdvantage ? team1Score + 1 : team1Score;
+            let team2FinalScore = homeAdvantage ? team2Score : team2Score + 1;
+
+            // Penalities Simulation
+            applyPenalties(team1, team2);
+
+            // Simulate the game result
+            if (team1FinalScore > team2FinalScore) {
+                team1.wins++;
+                team1.points += 3; // 3 points for a win
+                team2.losses++;
+                document.getElementById("game-result").textContent = `${team1.name} wins ${team1FinalScore} - ${team2FinalScore}`;
+            } else if (team2FinalScore > team1FinalScore) {
+                team2.wins++;
+                team2.points += 3;
+                team1.losses++;
+                document.getElementById("game-result").textContent = `${team2.name} wins ${team2FinalScore} - ${team1FinalScore}`;
+            } else {
+                team1.points += 1;
+                team2.points += 1;
+                document.getElementById("game-result").textContent = `It's a tie: ${team1.name} ${team1FinalScore} - ${team2FinalScore} ${team2.name}`;
+            }
+
+            // Update player stats
+            updatePlayerStats();
+            updateSeasonRecord();
+            saveSeasonData();
+        }
+
+        // Apply random penalties
+        function applyPenalties(team1, team2) {
+            const team1Penalty = Math.floor(Math.random() * 2);  // 0 or 1 penalties
+            const team2Penalty = Math.floor(Math.random() * 2);
+
+            team1.players[Math.floor(Math.random() * team1.players.length)].penalties += team1Penalty;
+            team2.players[Math.floor(Math.random() * team2.players.length)].penalties += team2Penalty;
+        }
+
+        // Update the player stats table
+        function updatePlayerStats() {
+            const statsTable = document.getElementById("player-stats");
+            statsTable.innerHTML = "";
+            teams.forEach(team => {
+                team.players.forEach(player => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${player.name}</td>
+                        <td>${player.goals}</td>
+                        <td>${player.assists}</td>
+                        <td>${player.goals + player.assists}</td>
+                        <td class="penalty">${player.penalties}</td>
+                    `;
+                    statsTable.appendChild(row);
+                });
+            });
+        }
+
+        // Update the season record
+        function updateSeasonRecord() {
+            const seasonRecord = teams.map(team => `${team.name}: ${team.wins}W - ${team.losses}L, ${team.points} Points`).join('<br>');
+            document.getElementById("season-record").innerHTML = seasonRecord;
+        }
+
+        // Reset the season
+        function resetSeason() {
+            teams = JSON.parse(JSON.stringify(defaultTeams));  // Reset teams to the default values
+            updateSeasonRecord();
+            displayTeams();
+            saveSeasonData();  // Save the reset data to localStorage
+        }
+
+        // Save the teams data to localStorage
         function saveSeasonData() {
             localStorage.setItem("teams", JSON.stringify(teams));
         }
 
-        // Display the teams and players on the page
-        function displayTeams()
+        // Initialize page
+        displayTeams();
+        updateSeasonRecord();
+    </script>
+</body>
+</html>
