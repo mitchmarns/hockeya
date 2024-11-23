@@ -19,18 +19,21 @@
     <h1>Hockey Game Simulator</h1>
 
     <div class="team-selection">
-        <label>Select Team 1: </label>
-<input type="radio" id="team1Rangers" name="team1" value="0"> Rangers
-<input type="radio" id="team1Devils" name="team1" value="1"> Devils
-<input type="radio" id="team1Sabres" name="team1" value="2"> Sabres
-<input type="radio" id="team1Islanders" name="team1" value="3"> Islanders
+<h3>Select Team 1:</h3>
+<ul id="team1List">
+    <li onclick="selectTeam(0, 'team1')">Rangers</li>
+    <li onclick="selectTeam(1, 'team1')">Devils</li>
+    <li onclick="selectTeam(2, 'team1')">Sabres</li>
+    <li onclick="selectTeam(3, 'team1')">Islanders</li>
+</ul>
 
-        
-        <label>Select Team 2: </label>
-<input type="radio" id="team1Rangers" name="team2" value="0"> Rangers
-<input type="radio" id="team1Devils" name="team2" value="1"> Devils
-<input type="radio" id="team1Sabres" name="team2" value="2"> Sabres
-<input type="radio" id="team1Islanders" name="team2" value="3"> Islanders
+<h3>Select Team 2:</h3>
+<ul id="team2List">
+    <li onclick="selectTeam(0, 'team2')">Rangers</li>
+    <li onclick="selectTeam(1, 'team2')">Devils</li>
+    <li onclick="selectTeam(2, 'team2')">Sabres</li>
+    <li onclick="selectTeam(3, 'team2')">Islanders</li>
+</ul>
 
         
         <button id="simulateGame">Simulate Game</button>
