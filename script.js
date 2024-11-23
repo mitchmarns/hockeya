@@ -1,4 +1,4 @@
-// Teams and players
+// Teams and players data
 const teams = [
     {
         name: "The Sharks",
@@ -42,62 +42,77 @@ const teams = [
     }
 ];
 
-// Display teams and rosters in HTML
+// Display teams and rosters in HTML (optional)
 function displayTeams() {
+    const team1Select = document.getElementById('team1Select');
+    const team2Select = document.getElementById('team2Select');
+
     teams.forEach((team, index) => {
-        const teamRoster = document.getElementById(`team${index + 1}-roster`);
-        team.roster.forEach(player => {
-            const li = document.createElement('li');
-            li.textContent = `${player.name} - Goals: ${player.goals}`;
-            teamRoster.appendChild(li);
-        });
+        // Populate dropdowns with team names
+        const option1 = document.createElement('option');
+        option1.value = index;
+        option1.textContent = team.name;
+        team1Select.appendChild(option1);
+
+        const option2 = document.createElement('option');
+        option2.value = index;
+        option2.textContent = team.name;
+        team2Select.appendChild(option2);
     });
 }
 
 // Simulate a game between two teams
 function simulateGame() {
-    // Randomize goals for each player (between 0 and 3 goals)
-    teams.forEach(team => {
-        team.roster.forEach(player => {
-            player.goals = Math.floor(Math.random() * 4); // 0-3 goals per player
-        });
+    // Get selected teams from dropdowns
+    const team1Index = parseInt(document.getElementById("team1Select").value);
+    const team2Index = parseInt(document.getElementById("team2Select").value);
+
+    const team1 = teams[team1Index];
+    const team2 = teams[team2Index];
+
+    // Simulate goals for each player (0-3 goals per player)
+    team1.roster.forEach(player => {
+        player.goals = Math.floor(Math.random() * 4);
+    });
+    team2.roster.forEach(player => {
+        player.goals = Math.floor(Math.random() * 4);
     });
 
-    // Update the scoreboard
-    updateScoreboard();
+    // Calculate total goals for each team
+    const team1Goals = team1.roster.reduce((acc, player) => acc + player.goals, 0);
+    const team2Goals = team2.roster.reduce((acc, player) => acc + player.goals, 0);
 
-    // Display winner or tie
-    const teamGoals = teams.map(team => team.roster.reduce((acc, player) => acc + player.goals, 0));
+    // Update the scoreboard
+    document.getElementById("team1Goals").textContent = team1Goals;
+    document.getElementById("team2Goals").textContent = team2Goals;
+
+    // Display the team names
+    document.getElementById("team1Name").textContent = `Team 1: ${team1.name}`;
+    document.getElementById("team2Name").textContent = `Team 2: ${team2.name}`;
+
+    // Determine winner or tie
     let result;
-    const maxGoals = Math.max(...teamGoals);
-    const winningTeams = teams.filter((team, index) => teamGoals[index] === maxGoals);
-    if (winningTeams.length === 1) {
-        result = `${winningTeams[0].name} wins!`;
+    if (team1Goals > team2Goals) {
+        result = `${team1.name} wins!`;
+    } else if (team2Goals > team1Goals) {
+        result = `${team2.name} wins!`;
     } else {
         result = "It's a tie!";
     }
 
     document.getElementById("gameResult").textContent = result;
 
-    // Save stats to localStorage (optional)
+    // Optionally, save the stats to localStorage
     localStorage.setItem('teams', JSON.stringify(teams));
 }
 
-// Update the scoreboard
-function updateScoreboard() {
-    teams.forEach((team, index) => {
-        const teamGoals = team.roster.reduce((acc, player) => acc + player.goals, 0);
-        document.getElementById(`team${index + 1}Goals`).textContent = teamGoals;
-    });
-}
-
-// On page load, display teams and load saved data
+// On page load, display the teams and rosters (if needed)
 window.onload = function() {
     displayTeams();
     const savedTeams = localStorage.getItem('teams');
     if (savedTeams) {
-        teams.length = 0; // Clear the teams array
-        Object.assign(teams, JSON.parse(savedTeams)); // Load saved data
+        // Load saved data from localStorage
+        Object.assign(teams, JSON.parse(savedTeams));
     }
 };
 
